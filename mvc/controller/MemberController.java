@@ -17,13 +17,16 @@ public class MemberController {
         return mem;
     }
 
-    public String checkId(String userId){
+    public Member checkId(String userId){
+
+        Member m=null;
 
         for(int i=0; i<this.mem.length; i++){
             if(mem[i].getUserId().equals(userId))
-                return mem[i].getUserId();
+                //return mem[i].getUserId();
+                m=mem[i];
         }
-        return null;
+        return m;
     }
 
     public void insertMember(Member m){
@@ -77,8 +80,8 @@ public class MemberController {
             this.mem[j] = this.mem[j + 1];  // 찾은 인덱스 값 뒤 인덱스 값들을 한칸씩 이동시켜 덮어쓴다
     }
 
-    public Member[] sortldAsc(){
+    //public Member[] sortldAsc(){
 
-    }
+    //}
 
 }

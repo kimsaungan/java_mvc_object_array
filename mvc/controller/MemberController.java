@@ -33,11 +33,13 @@ public class MemberController /*implements Cloneable*/{
 
         Member m=null;
 
-        for(int i=0; i<this.mem.length; i++){
-            if(mem[i].getUserId().equals(userId))
-                //return mem[i].getUserId();
-                m=mem[i];
-        }
+        for(int i=0; i<memberCount; i++) {
+
+                if (mem[i].getUserId().equals(userId))
+                    //return mem[i].getUserId();
+                    m = mem[i];
+            }
+
         return m;
     }
 
@@ -51,19 +53,19 @@ public class MemberController /*implements Cloneable*/{
         Member search_mem = new Member();
 
         if(menu==1){// foreach문으로도 가능
-            for(int i = 0; i<this.mem.length; i++)
+            for(int i = 0; i<memberCount; i++)
                 if(mem[i].getUserId().equals(search))
                     search_mem=mem[i];
                     return search_mem;
 
         }else if(menu==2){
-            for(int i = 0; i<this.mem.length; i++)
+            for(int i = 0; i<memberCount; i++)
                 if(mem[i].getName().equals(search))
                     search_mem=mem[i];
                     return search_mem;
 
         }else if(menu==3){
-                for(int i = 0; i<this.mem.length; i++)
+                for(int i = 0; i<memberCount; i++)
                     if(mem[i].getEmail().equals(search))
                         search_mem=mem[i];
                         return search_mem;
@@ -88,13 +90,18 @@ public class MemberController /*implements Cloneable*/{
         for(int i=0; i< memberCount; i++) {
             if (mem[i].getUserId().equals(userId)) {
                 delete_index = i;
-                memberCount--;
+                //memberCount--;
                 break;
             }
         }
         System.out.println("delete_index : "+delete_index);
-        for(int j=delete_index; j<memberCount; j++)
+        for(int j=delete_index; j<memberCount; j++){
             this.mem[j] = this.mem[j + 1];  // 찾은 인덱스 값 뒤 인덱스 값들을 한칸씩 이동시켜 덮어쓴다
+        }
+        mem[memberCount-1]=null;  //마지막이였던 요소에 null 대입
+        memberCount--;
+
+
     }
 
 //    public Object clone(){
@@ -108,7 +115,7 @@ public class MemberController /*implements Cloneable*/{
 //        }
 //        return (Member)obj;
 //    }
-    public Member[] sortldAsc(){
+    public Member[] sortIdAsc(){
 
         Member[] copy = new Member[memberCount];    // 배열의 값만 복사하는 얕은 복사
 //        copy=mem.clone();   // mem 객체 배열을 객체배열로 깊은 복사
@@ -192,7 +199,7 @@ public class MemberController /*implements Cloneable*/{
             }
         }
 
-    return copy;
+        return copy;
     }
 
     public Member[] sortAgeDesc(){

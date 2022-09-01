@@ -22,7 +22,11 @@ public class MemberMenu {
             System.out.println("5. 회원 정보 출력");
             System.out.println("6. 회원 정보 정렬 ");
             System.out.println("9. 프로그램 종료");
-            switch (sc) {
+            System.out.println("메뉴선택");
+            int menu=sc.nextInt();
+            sc.nextLine();
+
+            switch (menu) {
                 case 1:
                     insertMember();
                     break;
@@ -37,6 +41,7 @@ public class MemberMenu {
                     break;
                 case 5:
                     printAllMember();
+                    break;
                 case 6:
                     sortMember();
                     break;
@@ -46,24 +51,23 @@ public class MemberMenu {
                     System.out.println("잘못된 메뉴 선택을 하였습니다. 다시 선택해주세요. ");
             }
         }
-        sc.close();
+        //sc.close();
 
     }
     public void insertMember(){
 
+        sc.nextLine();
         if (mc.getMemberCount() > mc.SIZE) {
             return;
         }
 
+        System.out.print("아이디 : ");
         String check_Id = sc.nextLine();
 
         if(mc.checkId(check_Id)!=null){
             System.out.println("동일한 아이디가 존재합니다. 회원등록 실패");
             return ;
         }
-
-        System.out.print("아이디 : ");
-        String id= sc.nextLine();
 
         System.out.print("비밀번호 : ");
         String pw= sc.nextLine();
@@ -74,13 +78,16 @@ public class MemberMenu {
         System.out.print("나이 : ");
         int age = sc.nextInt();
 
+        sc.nextLine();  // sc.nextLine()은 개행문자를 포함하고
+                        // 그 외 next~()은 개행문자를 무시하고 값만 입력받는다
+
         System.out.print("성별 : ");
-        char gen = sc.next().charAt(0);
+        char gen = sc.nextLine().charAt(0);
 
         System.out.print("이메일 : ");
         String email = sc.nextLine();
 
-        Member insertmem = new Member(id,pw,name,age,gen,email); //입력받은 데이터로 객체 생성
+        Member insertmem = new Member(check_Id,pw,name,age,gen,email); //입력받은 데이터로 객체 생성
         mc.insertMember(insertmem);  // 생선된 객체를 회원 배열(memberController의 Member배열)의 요소로 추가
 
         System.out.println("성공적으로 회원 등록이 되었습니다. ");
@@ -100,8 +107,7 @@ public class MemberMenu {
             System.out.println("메뉴 선택 : ");
             int choice_menu=sc.nextInt();
 
-            System.out.println("검색 내용 :   ");
-            String search_data=sc.nextLine();
+            sc.nextLine();  // 다음 입력값에 개행문자가 입력되는 것을 방지
 
             if(!(choice_menu==1||choice_menu==2||choice_menu==3||choice_menu==9)){
                 System.out.println("잘못된 메뉴선택을 했습니다. 다시 입력해주세요.");
@@ -109,8 +115,12 @@ public class MemberMenu {
             } else if (choice_menu==9) {
                 break;
             } else {
+
+                System.out.println("검색 내용 :   ");
+                String search_data=sc.nextLine();
+
                 Member result_mem = mc.searchMember(choice_menu,search_data);
-                if( result_mem!=null) {
+                if( result_mem==null) {
                     System.out.println("검색된 결과가 없습니다.");
                 }else {
                     System.out.println("====== 검색결과 ======");
@@ -132,9 +142,7 @@ public class MemberMenu {
             System.out.println("메뉴 선택 : ");
             int choice_menu=sc.nextInt();
 
-            System.out.println("변결할 회원 아이디 :   ");
-            String update_data_id=sc.nextLine();
-
+            sc.nextLine(); // 다음 입력값에 개행문자가 입력되는것을 방지
 
             if(!(choice_menu==1||choice_menu==2||choice_menu==3||choice_menu==9)){
                 System.out.println("잘못된 메뉴선택을 했습니다. 다시 입력해주세요.");
@@ -142,6 +150,11 @@ public class MemberMenu {
             }else if (choice_menu==9) {
                 break;
             }else {  // checkId()을 통해 id가 존재하는지 확인
+
+                System.out.println("변경할 회원 아이디 :   ");
+                String update_data_id=sc.nextLine();
+
+
                 if(mc.checkId(update_data_id)==null){
                     System.out.println("변경할 회원이 존재하지 않습니다.");
                 }else{
@@ -175,7 +188,7 @@ public class MemberMenu {
         }else{
             System.out.println("정말 삭제하시겠습니까?(y/n)");
             String delete_check=sc.nextLine();
-            if(delete_check.equals('y')||delete_check.equals('Y')){
+            if(delete_check.equals("y")||delete_check.equals("Y")){
                 mc.deleteMember(delete_id);
                 System.out.println("회원의 정보가 삭제되었습니다.");
             }else {
@@ -189,9 +202,11 @@ public class MemberMenu {
         Member[] mem = mc.getMem();
 
         System.out.println("전체 회원정보 조회");
-        for(Member m : mem){
-            System.out.println(m.information());
-        }
+        try {
+            for (Member m : mem) {
+                System.out.println(m.information());
+            }
+        }catch (NullPointerException e){}
 
     }
 
@@ -210,21 +225,37 @@ public class MemberMenu {
             System.out.println("메뉴 선택 : ");
             int menu = sc.nextInt();
 
-            if(menu==1) mc.sortId
+            if(menu==1) {
+                sortMem=mc.sortIdAsc();
+                System.out.println("== 아이디 오름차순 정렬 조회 ==");
+            }
+            else if(menu==2) {
+                sortMem=mc.sortIdDesc();
+                System.out.println("== 아이디 내림차순 정렬 조회 ==");
+            }
+            else if (menu==3){
+                sortMem=mc.sortAgeAsc();
+                System.out.println("== 나이 오름차순 정렬 조회 ==");
+            }
+            else if (menu==4){
+                sortMem=mc.sortAgeDesc();
+                System.out.println("== 나이 내림차순 정렬 조화 ==");
+            }
+            else if (menu==5){
+                sortMem=mc.sortGenderDesc();
+                System.out.println("== 성별 내림차순 정렬(남여순) 조회 ==");
+            }
+            else if (menu==9) break;
 
+            for (int i = 0; i <mc.getMemberCount() ; i++) {
 
-
-
+                System.out.println(sortMem[i].information());
+            }
+//            for(Member m : sortMem){
+//                System.out.println(m.information());
+//            }
         }
 
-
-
-
-
     }
-
-
-
-
 
 }

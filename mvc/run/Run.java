@@ -2,15 +2,16 @@ package run;
 
 import controller.MemberController;
 import mvc.model.vo.Member;
+import view.MemberMenu;
 
 public class Run {
 
 
     public static void main(String[] args) {
 
-        MemberController memberController = new MemberController();
+        MemberMenu memberMenu = new MemberMenu();
 
-        memberController.sortldAsc();
+        memberMenu.mainMenu();
 
     }
 }

@@ -1,6 +1,6 @@
 package mvc.model.vo;
 
-public class Member {
+public class Member implements Comparable<Member>{
 
     private String userId;
     private String userPwd;
@@ -70,8 +70,14 @@ public class Member {
     public void setGender(char gender) {
         this.gender = gender;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public int compareTo(Member m) {
+        //return (this.userId.compareTo(m.userId));
+        return (m.userId.compareTo(this.userId));
+    }
+
 }
